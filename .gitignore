@@ -26,7 +26,16 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
+
+# sqlite
+/prisma/dev.db
+/prisma/dev.db-journal
+
+# company logos
+/public/uploads/logos/*
+!/public/uploads/logos/.gitkeep
 
 # vercel
 .vercel
@@ -34,3 +43,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pacotes locais
+*.tgz

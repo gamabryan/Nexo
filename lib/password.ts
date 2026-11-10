@@ -1,0 +1,12 @@
+import bcrypt from "bcryptjs";
+
+const ROUNDS = 12;
+
+export function hashPassword(password: string) {
+  return bcrypt.hash(password, ROUNDS);
+}
+
+export function verifyPassword(password: string, passwordHash: string) {
+  if (!passwordHash) return Promise.resolve(false);
+  return bcrypt.compare(password, passwordHash);
+}

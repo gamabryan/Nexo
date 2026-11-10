@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                     String     @id @default(cuid())
+  name                   String
+  email                  String     @unique
+  passwordHash           String     @default("")
+  companyName            String
+  companyLogo            String     @default("")
+  /// monthly | quarterly | annual | lifetime
+  subscriptionPlan       String     @default("")
+  /// PENDING | ACTIVE | CANCELLED | EXPIRED
+  /// ACTIVE por padrão para contas já existentes antes da cobrança.
+  subscriptionStatus     String     @default("ACTIVE")
+  subscriptionId         String     @default("")
+  subscriptionCheckoutId String     @default("")
+  subscriptionExternalId String     @default("")
+  subscriptionExpiresAt  DateTime?
+  abacateCustomerId      String     @default("")
+  proposals              Proposal[]
+  products               Product[]
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  sku         String   @default("")
+  unit        String   @default("un")
+  quantity    Float    @default(0)
+  minQuantity Float    @default(0)
+  unitCost    Float    @default(0)
+  unitPrice   Float    @default(0)
+  notes       String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId, name])
+}
+
+model Proposal {
+  id              String         @id @default(cuid())
+  userId          String
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientName      String
+  description     String
+  items           Json
+  totalAmount     Float
+  status          ProposalStatus @default(PENDING)
+  estimatedDays   Int            @default(1)
+  materialsNeeded String         @default("")
+  hasFreight      Boolean        @default(false)
+  freightAmount   Float          @default(0)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([userId, createdAt])
+}
+
+enum ProposalStatus {
+  PENDING
+  PREPAID
+  PAID
+  REJECTED
+}

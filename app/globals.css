@@ -2,26 +2,85 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 40 28% 96%;
+    --foreground: 160 16% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 16% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 16% 10%;
+    --primary: 164 38% 16%;
+    --primary-foreground: 40 33% 97%;
+    --secondary: 40 16% 93%;
+    --secondary-foreground: 160 14% 16%;
+    --muted: 40 18% 94%;
+    --muted-foreground: 160 6% 36%;
+    --accent: 40 18% 92%;
+    --accent-foreground: 164 38% 16%;
+    --destructive: 4 68% 40%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 152 38% 26%;
+    --success-foreground: 0 0% 100%;
+    --border: 36 12% 86%;
+    --input: 36 10% 78%;
+    --ring: 164 38% 16%;
+    --radius: 0.65rem;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.16);
+    color: hsl(var(--foreground));
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.font-display {
+  font-family: "Palatino Linotype", Palatino, "Iowan Old Style", Georgia, serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: page-enter 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  .print-sheet {
+    box-shadow: none !important;
   }
 }
